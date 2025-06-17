@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Analiza stylu</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/output.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon.png') }}">
+</head>
+<body class="background">
+
+<!-- Górny pasek z API -->
+<header class="bg-red-rose bg-opacity-90 hover:bg-opacity-100 transition duration-300 text-white sticky-menu-header">
+    <div class="max-w-screen-xl mx-auto px-4 py-3">
+        <form action="/save-key" method="POST" class="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-4" role="form">
+            <label for="userOpenAIKey" class="text-white pr-0 md:pr-5 font-semibold">
+                Wklej klucz API OpenAI:
+            </label>
+            <input type="text" id="userOpenAIKey" name="userOpenAIKey"
+                   class="p-2 border-2 border-turquoise rounded bg-[#EF476F] text-white placeholder-[#FFD6E4]
+                          focus:outline-none focus:border-[#06D6A0] pl-5 w-full md:w-auto"
+                   placeholder="Przykład: sk-proj-#123">
+        </form>
+        {% if messages %}
+            <div class="text-green-500 mt-4 text-center"> {# Dodano klasy mt-4 i text-center dla lepszego wyglądu #}
+                {% for msg in messages %}
+                    <span class="block">{{ msg }}</span> {# Użycie span z display: block dla każdej wiadomości #}
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+</header>
+<!-- Nawigacja główna -->
+<nav class="bg-white/90 hover:bg-white transition duration-300 sticky-menu-nav border-2 border-turquoise mb-0 pb-0">
+  <div class="max-w-screen-xl mx-auto flex items-center justify-between px-8 py-4">
+
+    <div class="w-1/6 flex justify-start">
+      <a href="/">
+        <img src="{{ url_for('static', filename='images/favicon.png') }}" alt="Logo" class="h-16 w-auto">
+      </a>
+    </div>
+
+    <div class="md:hidden">
+      <button id="hamburger-button" class="text-turquoise hover:text-light-rose focus:outline-none">
+        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
+    </div>
+
+    <ul class="hidden md:flex w-3/5 justify-center space-x-16">
+      <li class="relative group">
+        <a href="#" class="text-turquoise hover:text-light-rose transition duration-300 flex items-center">
+          Komiks
+          <svg class="ml-1 w-4 h-4 fill-current text-turquoise group-hover:text-light-rose" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M5.25 7.75L10 12.5l4.75-4.75z"/></svg>
+        </a>
+        <ul
+          class="absolute left-0 top-full mt-0 w-40 bg-white border border-turquoise rounded shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity duration-300 z-50"
+          style="margin-top: 0 !important;"
+        >
+          <li><a href="#artjam" class="block px-4 py-2 text-turquoise hover:bg-turquoise hover:text-white">artjam</a></li>
+          <li><a href="#cdv" class="block px-4 py-2 text-turquoise hover:bg-turquoise hover:text-white">cdv</a></li>
+          <li><a href="#blackwhite" class="block px-4 py-2 text-turquoise hover:bg-turquoise hover:text-white">blackwhite</a></li>
+          <li><a href="#random" class="block px-4 py-2 text-turquoise hover:bg-turquoise hover:text-white">random</a></li>
+          <li><a href="#normal" class="block px-4 py-2 text-turquoise hover:bg-turquoise hover:text-white">normal</a></li>
+        </ul>
+      </li>
+      <li><a href="#" class="text-turquoise hover:text-light-rose transition duration-300">Mapa</a></li>
+      <li><a href="#" class="text-turquoise hover:text-light-rose transition duration-300">Mem</a></li>
+      <li><a href="#" class="text-turquoise hover:text-light-rose transition duration-300">Style</a></li>
+      <li><a href="#faq" class="text-turquoise hover:text-light-rose transition duration-300">FAQ</a></li>
+      <li><a href="#about" class="text-turquoise hover:text-light-rose transition duration-300 whitespace-nowrap">O nas</a></li>
+      <li><a href="#contact" class="text-turquoise hover:text-light-rose transition duration-300">Kontakt</a></li>
+    </ul>
+
+    <div class="w-1/5 hidden md:block"></div>
+
+  </div>
+
+  <div id="mobile-menu" class="hidden md:hidden">
+    <ul class="flex flex-col items-center py-4 space-y-4 bg-white border-t border-turquoise">
+      <li class="relative group w-full text-center">
+        <a href="#" class="text-turquoise hover:text-light-rose transition duration-300 flex items-center justify-center">
+          Komiks
+          <svg class="ml-1 w-4 h-4 fill-current text-turquoise group-hover:text-light-rose" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M5.25 7.75L10 12.5l4.75-4.75z"/></svg>
+        </a>
+        <ul class="mt-2 w-full bg-white border-t border-turquoise shadow-lg group-hover:block hidden">
+          <li><a href="#artjam" class="block px-4 py-2 text-turquoise hover:bg-turquoise hover:text-white">artjam</a></li>
+          <li><a href="#cdv" class="block px-4 py-2 text-turquoise hover:bg-turquoise hover:text-white">cdv</a></li>
+          <li><a href="#blackwhite" class="block px-4 py-2 text-turquoise hover:bg-turquoise hover:text-white">blackwhite</a></li>
+          <li><a href="#random" class="block px-4 py-2 text-turquoise hover:bg-turquoise hover:text-white">random</a></li>
+          <li><a href="#normal" class="block px-4 py-2 text-turquoise hover:bg-turquoise hover:text-white">normal</a></li>
+        </ul>
+      </li>
+      <li><a href="#" class="text-turquoise hover:text-light-rose transition duration-300">Mapa</a></li>
+      <li><a href="#" class="text-turquoise hover:text-light-rose transition duration-300">Mem</a></li>
+      <li><a href="#" class="text-turquoise hover:text-light-rose transition duration-300">Style</a></li>
+      <li><a href="#faq" class="text-turquoise hover:text-light-rose transition duration-300">FAQ</a></li>
+      <li><a href="#about" class="text-turquoise hover:text-light-rose transition duration-300 whitespace-nowrap">O nas</a></li>
+      <li><a href="#contact" class="text-turquoise hover:text-light-rose transition duration-300">Kontakt</a></li>
+    </ul>
+  </div>
+</nav>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const hamburgerButton = document.getElementById('hamburger-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    if (hamburgerButton && mobileMenu) {
+      hamburgerButton.addEventListener('click', function() {
+        mobileMenu.classList.toggle('hidden');
+      });
+    }
+  });
+</script>
+
+<main class="background pt-[300px]">
+
+<!-- Sekcja 1: ArtJam -->
+<section id="artjam" class="bg-light-rose bg-opacity-80 py-8">
+  <div class="max-w-screen-xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-6 items-center min-h-[300px] rounded-lg shadow-md">
+
+    <div class="text-center md:text-left">
+      <h2 class="text-2xl font-bold text-red-rose mb-4">Komiks Art Jam</h2>
+      <p class="text-gray-700 mb-6">Rozwiń swoją kreatywność z ArtJam – kliknij poniżej, aby stworzyć komiks inspirowany pasją i sztuką.</p>
+      <form method="POST" action="{{ url_for('generate_comic', section='artjam') }}">
+        <input type="text" name="user_prompt" placeholder="Opisz swój pomysł" class="mb-4 p-2 w-full border rounded" required>
+        <button class="bg-turquoise hover:bg-[#05c38e] text-white font-semibold py-3 px-6 rounded shadow transition duration-300">
+          🔴🟢 Stwórz komiks w kolorach ArtJam
+        </button>
+      </form>
+
+      {% if comic_url and active_section == 'artjam' %}
+        <div class="mt-4">
+          <a href="{{ comic_url }}" target="_blank" rel="noopener noreferrer" class="text-turquoise underline hover:text-light-rose">
+            Otwórz obrazek w nowej karcie
+          </a>
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="flex items-center justify-center h-full bg-white border-2 border-turquoise rounded shadow w-[400px] h-[250px] overflow-hidden">
+      {% if comic_url and active_section == 'artjam' %}
+        <img src="{{ comic_url }}" alt="Wygenerowany komiks" class="max-h-full max-w-full object-contain" />
+      {% else %}
+        <img src="{{ url_for('static', filename='images/artjam.png') }}" alt="ArtJam komiks" class="max-h-full max-w-full object-contain" />
+      {% endif %}
+    </div>
+
+  </div>
+</section>
+
+  <!-- Sekcja 2: CDV -->
+<section id="cdv" class="mt-[300px] bg-light-rose bg-opacity-80 py-8">
+  <div class="max-w-screen-xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-6 items-center min-h-[300px] rounded-lg shadow-md">
+    <div class="text-center md:text-left">
+      <h2 class="text-2xl font-bold text-red-rose mb-4">Komiks CDV</h2>
+      <p class="text-gray-700 mb-6">Stwórz komiks inspirowany życiem na CDV!</p>
+      <form method="POST" action="{{ url_for('generate_comic', section='cdv') }}">
+        <input type="text" name="user_prompt" placeholder="Napisz o czym będzie komiks" class="mb-4 p-2 w-full border rounded" required>
+        <button class="bg-turquoise hover:bg-[#05c38e] text-white font-semibold py-3 px-6 rounded shadow transition duration-300">
+          🏫 Stwórz komiks w kolorach cdv
+        </button>
+      </form>
+      {% if comic_url and active_section == 'cdv' %}
+        <div class="mt-4">
+          <a href="{{ comic_url }}" target="_blank" class="text-turquoise underline hover:text-light-rose">
+            Otwórz obrazek w nowej karcie
+          </a>
+        </div>
+      {% endif %}
+    </div>
+    <div class="flex items-center justify-center h-full bg-white border-2 border-turquoise rounded shadow w-[400px] h-[250px] overflow-hidden">
+      {% if comic_url and active_section == 'cdv' %}
+        <img src="{{ comic_url }}" alt="Wygenerowany CDV komiks" class="max-h-full max-w-full object-contain" />
+      {% else %}
+        <img src="{{ url_for('static', filename='images/cdv.png') }}" alt="CDV komiks" class="max-h-full max-w-full object-contain" />
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<!-- Sekcja 3: Czarnobiały -->
+<section id="blackwhite" class="mt-[300px] bg-light-rose bg-opacity-80 py-8">
+  <div class="max-w-screen-xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-6 items-center min-h-[300px] rounded-lg shadow-md">
+    <div class="text-center md:text-left">
+      <h2 class="text-2xl font-bold text-red-rose mb-4">Czarno-biały komiks</h2>
+      <p class="text-gray-700 mb-6">Wprowadź klasykę – komiks w odcieniach szarości!</p>
+      <form method="POST" action="{{ url_for('generate_comic', section='blackwhite') }}">
+        <input type="text" name="user_prompt" placeholder="Opis czarno-białego komiksu" class="mb-4 p-2 w-full border rounded" required>
+        <button class="bg-turquoise hover:bg-[#05c38e] text-white font-semibold py-3 px-6 rounded shadow transition duration-300">
+          ⚫⚪ Stwórz czarno-biały komiks
+        </button>
+      </form>
+      {% if comic_url and active_section == 'blackwhite' %}
+        <div class="mt-4">
+          <a href="{{ comic_url }}" target="_blank" class="text-turquoise underline hover:text-light-rose">
+            Otwórz obrazek w nowej karcie
+          </a>
+        </div>
+      {% endif %}
+    </div>
+    <div class="flex items-center justify-center h-full bg-white border-2 border-turquoise rounded shadow w-[400px] h-[250px] overflow-hidden">
+      {% if comic_url and active_section == 'blackwhite' %}
+        <img src="{{ comic_url }}" alt="Wygenerowany komiks czarno-biały" class="max-h-full max-w-full object-contain" />
+      {% else %}
+        <img src="{{ url_for('static', filename='images/blackwhite.png') }}" alt="Black and White" class="max-h-full max-w-full object-contain" />
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<!-- Sekcja 4: Random -->
+<section id="random" class="mt-[300px] bg-light-rose bg-opacity-80 py-8">
+  <div class="max-w-screen-xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-6 items-center min-h-[300px] rounded-lg shadow-md">
+    <div class="text-center md:text-left">
+      <h2 class="text-2xl font-bold text-red-rose mb-4">Losowy komiks</h2>
+      <p class="text-gray-700 mb-6">Nie masz pomysłu? Zostaw to przypadkowi!</p>
+      <form method="POST" action="{{ url_for('generate_comic', section='random') }}">
+        <input type="text" name="user_prompt" placeholder="Daj temat lub zostaw pusty" class="mb-4 p-2 w-full border rounded">
+        <button class="bg-turquoise hover:bg-[#05c38e] text-white font-semibold py-3 px-6 rounded shadow transition duration-300">
+          🎲 Stwórz komiks w losowych kolorach
+        </button>
+      </form>
+      {% if comic_url and active_section == 'random' %}
+        <div class="mt-4">
+          <a href="{{ comic_url }}" target="_blank" class="text-turquoise underline hover:text-light-rose">
+            Otwórz obrazek w nowej karcie
+          </a>
+        </div>
+      {% endif %}
+    </div>
+    <div class="flex items-center justify-center h-full bg-white border-2 border-turquoise rounded shadow w-[400px] h-[250px] overflow-hidden">
+      {% if comic_url and active_section == 'random' %}
+        <img src="{{ comic_url }}" alt="Wygenerowany losowy komiks" class="max-h-full max-w-full object-contain" />
+      {% else %}
+        <img src="{{ url_for('static', filename='images/random.png') }}" alt="Random komiks" class="max-h-full max-w-full object-contain" />
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<!-- Sekcja 5: Normal -->
+<section id="normal" class="mt-[300px] bg-light-rose bg-opacity-80 py-8">
+  <div class="max-w-screen-xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-6 items-center min-h-[300px] rounded-lg shadow-md">
+    <div class="text-center md:text-left">
+      <h2 class="text-2xl font-bold text-red-rose mb-4">Zwykły komiks</h2>
+      <p class="text-gray-700 mb-6">Najprostszy styl – klasyczny komiks w kolorze!</p>
+      <form method="POST" action="{{ url_for('generate_comic', section='normal') }}">
+        <input type="text" name="user_prompt" placeholder="Napisz swój pomysł" class="mb-4 p-2 w-full border rounded" required>
+        <button class="bg-turquoise hover:bg-[#05c38e] text-white font-semibold py-3 px-6 rounded shadow transition duration-300">
+          🖌️ Stwórz klasyczny komiks
+        </button>
+      </form>
+      {% if comic_url and active_section == 'normal' %}
+        <div class="mt-4">
+          <a href="{{ comic_url }}" target="_blank" class="text-turquoise underline hover:text-light-rose">
+            Otwórz obrazek w nowej karcie
+          </a>
+        </div>
+      {% endif %}
+    </div>
+    <div class="flex items-center justify-center h-full bg-white border-2 border-turquoise rounded shadow w-[400px] h-[250px] overflow-hidden">
+      {% if comic_url and active_section == 'normal' %}
+        <img src="{{ comic_url }}" alt="Wygenerowany klasyczny komiks" class="max-h-full max-w-full object-contain" />
+      {% else %}
+        <img src="{{ url_for('static', filename='images/normal.png') }}" alt="Normalny komiks" class="max-h-full max-w-full object-contain" />
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+  <section id="faq" class="bg-turquoise text-white py-16">
+  <div class="max-w-screen-xl mx-auto px-6">
+    <h2 class="text-3xl font-bold text-center mb-10">FAQ – Najczęściej zadawane pytania</h2>
+
+      <!-- Pytanie 1 -->
+      <div class="bg-turquoise border border-white rounded-lg overflow-hidden mb-4">
+        <button class="w-full group flex items-center px-6 py-4 text-gray-100 hover:text-white font-semibold text-lg transition-colors duration-300 faq-toggle cursor-pointer" type="button">
+          <span class="flex-grow text-left block w-full pointer-events-auto">Czym różni się styl "normal" od pozostałych stylów przy generowaniu komiksów z API OpenAI?</span>
+          <span class="flex items-center pointer-events-none">
+            <svg class="w-4 h-4 transition-transform duration-300 arrow-icon group-[.open]:rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none"
+                 viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </span>
+        </button>
+        <div class="hidden px-6 pb-4 text-white faq-answer">
+          Styl "normal" zazwyczaj odnosi się do standardowego, realistycznego lub półrealistycznego podejścia do ilustracji, bez wyraźnych stylizacji artystycznych, które charakteryzują inne opcje. Dąży do czytelności i powszechnie akceptowanej estetyki komiksowej.
+        </div>
+      </div>
+
+      <!-- Pytanie 2 -->
+      <div class="bg-turquoise border border-white rounded-lg overflow-hidden mb-4">
+        <button class="w-full group flex items-center px-6 py-4 text-gray-100 hover:text-white font-semibold text-lg transition-colors duration-300 faq-toggle cursor-pointer" type="button">
+          <span class="flex-grow text-left block w-full pointer-events-auto">W jakich sytuacjach najlepiej sprawdzi się styl "artjam" i jakie są jego typowe cechy wizualne?</span>
+          <span class="flex items-center pointer-events-none">
+            <svg class="w-4 h-4 transition-transform duration-300 arrow-icon group-[.open]:rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none"
+                 viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </span>
+        </button>
+        <div class="hidden px-6 pb-4 text-white faq-answer">
+          Styl "artjam" jest idealny, gdy chcemy uzyskać efekt bardziej ekspresyjny, kreatywny i często abstrakcyjny. Może charakteryzować się niestandardowymi liniami, intensywnymi kolorami, zniekształconymi proporcjami i ogólnie bardziej eksperymentalnym podejściem, często wyglądającym jak swobodna improwizacja wielu artystów.0
+        </div>
+      </div>
+
+      <!-- Pytanie 3 -->
+      <div class="bg-turquoise border border-white rounded-lg overflow-hidden mb-4">
+        <button class="w-full group flex items-center px-6 py-4 text-gray-100 hover:text-white font-semibold text-lg transition-colors duration-300 faq-toggle cursor-pointer" type="button">
+          <span class="flex-grow text-left block w-full pointer-events-auto">Co oznacza styl "cdv" w kontekście generowania komiksów i jakie obrazy można dzięki niemu uzyskać?</span>
+          <span class="flex items-center pointer-events-none">
+            <svg class="w-4 h-4 transition-transform duration-300 arrow-icon group-[.open]:rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none"
+                 viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </span>
+        </button>
+        <div class="hidden px-6 pb-4 text-white faq-answer">
+          Styl "cdv" prawdopodobnie odnosi się do "carte de visite" lub ogólnie do stylu fotografii i ilustracji popularnych w XIX wieku. Oznacza to, że generowane obrazy mogą mieć nostalgiczny, sepiowy, klasyczny, a nawet nieco "vintage'owy" charakter, często z detalami przypominającymi stare ryciny lub fotografie.
+        </div>
+      </div>
+
+      <!-- Pytanie 4 -->
+      <div class="bg-turquoise border border-white rounded-lg overflow-hidden mb-4">
+        <button class="w-full group flex items-center px-6 py-4 text-gray-100 hover:text-white font-semibold text-lg transition-colors duration-300 faq-toggle cursor-pointer" type="button">
+          <span class="flex-grow text-left block w-full pointer-events-auto">Kiedy warto użyć stylu "blackwhite" i jakie korzyści oferuje on w tworzeniu komiksów?</span>
+          <span class="flex items-center pointer-events-none">
+            <svg class="w-4 h-4 transition-transform duration-300 arrow-icon group-[.open]:rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none"
+                 viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </span>
+        </button>
+        <div class="hidden px-6 pb-4 text-white faq-answer">
+          Styl "blackwhite" (czarno-biały) jest doskonały do tworzenia komiksów o surowej, dramatycznej atmosferze. Pozwala skupić się na kontraście, cieniowaniu i linii, co może dodać głębi i powagi historiom, a także nadać im klasyczny, noir-owy wygląd. Jest też często bardziej ekonomiczny w generowaniu pod względem złożoności danych.
+        </div>
+      </div>
+
+      <!-- Pytanie 5 -->
+      <div class="bg-turquoise border border-white rounded-lg overflow-hidden mb-4">
+        <button class="w-full group flex items-center px-6 py-4 text-gray-100 hover:text-white font-semibold text-lg transition-colors duration-300 faq-toggle cursor-pointer" type="button">
+          <span class="flex-grow text-left block w-full pointer-events-auto">Czy styl "random" zapewnia całkowitą losowość, czy też posiada jakieś ukryte reguły lub preferencje w generowaniu obrazów?</span>
+          <span class="flex items-center pointer-events-none">
+            <svg class="w-4 h-4 transition-transform duration-300 arrow-icon group-[.open]:rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none"
+                 viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </span>
+        </button>
+        <div class="hidden px-6 pb-4 text-white faq-answer">
+        Styl "random" teoretycznie powinien generować obrazy w losowo wybranym stylu spośród dostępnych opcji, lub nawet tworzyć unikalne, niepowtarzalne kombinacje. Należy jednak pamiętać, że "losowość" w AI jest często pseudolosowa i może zależeć od ukrytych wag w modelu, co oznacza, że pewne kombinacje lub tendencje mogą pojawiać się częściej.
+        </div>
+      </div>
+
+      <!-- Pytanie 6 -->
+      <div class="bg-turquoise border border-white rounded-lg overflow-hidden mb-4">
+        <button class="w-full group flex items-center px-6 py-4 text-gray-100 hover:text-white font-semibold text-lg transition-colors duration-300 faq-toggle cursor-pointer" type="button">
+          <span class="flex-grow text-left block w-full pointer-events-auto">Jakie parametry w zapytaniu do API OpenAI mogą pomóc w doprecyzowaniu wyników, gdy wybieramy styl "normal"?</span>
+          <span class="flex items-center pointer-events-none">
+            <svg class="w-4 h-4 transition-transform duration-300 arrow-icon group-[.open]:rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none"
+                 viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </span>
+        </button>
+        <div class="hidden px-6 pb-4 text-white faq-answer">
+          Aby doprecyzować styl "normal", można użyć szczegółowych opisów sceny, postaci, ich emocji, ustawienia światła, perspektywy (np. "zbliżenie na twarz", "plan ogólny"). Można też użyć słów kluczowych takich jak "clean lines", "realistic proportions", "standard comic book art" w promptach tekstowych.
+        </div>
+      </div>
+
+      <!-- Pytanie 7 -->
+      <div class="bg-turquoise border border-white rounded-lg overflow-hidden mb-4">
+        <button class="w-full group flex items-center px-6 py-4 text-gray-100 hover:text-white font-semibold text-lg transition-colors duration-300 faq-toggle cursor-pointer" type="button">
+          <span class="flex-grow text-left block w-full pointer-events-auto">Czy generowanie komiksów w stylu "artjam" wymaga bardziej złożonych promptów, czy raczej krótkich, kreatywnych fraz?</span>
+          <span class="flex items-center pointer-events-none">
+            <svg class="w-4 h-4 transition-transform duration-300 arrow-icon group-[.open]:rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none"
+                 viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </span>
+        </button>
+        <div class="hidden px-6 pb-4 text-white faq-answer">
+           Styl "artjam" często lepiej reaguje na bardziej otwarte, kreatywne i abstrakcyjne prompty, które pozwalają AI na większą swobodę interpretacji. Krótkie, inspirujące frazy lub połączenia nietypowych pojęć mogą dać ciekawsze rezultaty niż bardzo szczegółowe opisy.
+        </div>
+      </div>
+
+      <!-- Pytanie 8 -->
+      <div class="bg-turquoise border border-white rounded-lg overflow-hidden mb-4">
+        <button class="w-full group flex items-center px-6 py-4 text-gray-100 hover:text-white font-semibold text-lg transition-colors duration-300 faq-toggle cursor-pointer" type="button">
+          <span class="flex-grow text-left block w-full pointer-events-auto"> Jak efektywnie wykorzystać styl "blackwhite" do budowania napięcia lub dramatyzmu w komiksie?</span>
+          <span class="flex items-center pointer-events-none">
+            <svg class="w-4 h-4 transition-transform duration-300 arrow-icon group-[.open]:rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none"
+                 viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </span>
+        </button>
+        <div class="hidden px-6 pb-4 text-white faq-answer">
+          W stylu "blackwhite" kluczowe jest wykorzystanie kontrastu i cieniowania. Można prosić o sceny z mocnym oświetleniem punktowym, głębokimi cieniami, sylwetkami, deszczem czy mgłą, aby podkreślić mrok, tajemnicę lub intensywność emocji.
+        </div>
+      </div>
+
+      <!-- Pytanie 9 -->
+      <div class="bg-turquoise border border-white rounded-lg overflow-hidden mb-4">
+        <button class="w-full group flex items-center px-6 py-4 text-gray-100 hover:text-white font-semibold text-lg transition-colors duration-300 faq-toggle cursor-pointer" type="button">
+          <span class="flex-grow text-left block w-full pointer-events-auto">Czy istnieje sposób, aby zasugerować AI, które elementy graficzne mają dominować w wygenerowanym obrazie, niezależnie od wybranego stylu (np. "cdv")?</span>
+          <span class="flex items-center pointer-events-none">
+            <svg class="w-4 h-4 transition-transform duration-300 arrow-icon group-[.open]:rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none"
+                 viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </span>
+        </button>
+        <div class="hidden px-6 pb-4 text-white faq-answer">
+           Tak, można to zrobić poprzez użycie "wagi" w promptach (jeśli API na to pozwala), lub po prostu przez umieszczenie najważniejszych elementów na początku opisu. Na przykład, w stylu "cdv", opisując "starą, zniszczoną kamerę z dymem w tle", "stara, zniszczona kamera" powinna być głównym elementem.
+        </div>
+      </div>
+
+      <!-- Pytanie 10 -->
+      <div class="bg-turquoise border border-white rounded-lg overflow-hidden mb-4">
+        <button class="w-full group flex items-center px-6 py-4 text-gray-100 hover:text-white font-semibold text-lg transition-colors duration-300 faq-toggle cursor-pointer" type="button">
+          <span class="flex-grow text-left block w-full pointer-events-auto"> Jeśli wybiorę styl "random", a wynik mi się nie spodoba, czy mogę w jakiś sposób "dostroić" generowanie, czy muszę po prostu próbować ponownie?</span>
+          <span class="flex items-center pointer-events-none">
+            <svg class="w-4 h-4 transition-transform duration-300 arrow-icon group-[.open]:rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none"
+                 viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </span>
+        </button>
+        <div class="hidden px-6 pb-4 text-white faq-answer">
+          Zazwyczaj, jeśli wynik "random" jest niezadowalający, najlepszym rozwiązaniem jest ponowne wywołanie API. Niektóre systemy AI oferują "seed" wartości, które można zmieniać, aby uzyskać inną losową wariację tego samego promptu. Jeśli zależy nam na konkretnym efekcie, lepiej jest precyzyjnie określić styl, zamiast polegać na "random".
+        </div>
+      </div>
+  </div>
+
+<script>
+  document.querySelectorAll('.faq-toggle').forEach(button => {
+    button.addEventListener('click', () => {
+      const answer = button.nextElementSibling;
+      const isOpen = !answer.classList.contains('hidden');
+
+      // Zamknij wszystkie odpowiedzi i zresetuj strzałki
+      document.querySelectorAll('.faq-answer').forEach(ans => ans.classList.add('hidden'));
+      document.querySelectorAll('.faq-toggle').forEach(btn => {
+        btn.classList.remove('text-white');
+        btn.classList.add('text-white/70');
+        const icon = btn.querySelector('.arrow-icon');
+        if (icon) {
+          icon.classList.remove('rotate-180');
+          icon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />`;
+        }
+      });
+
+      // Otwórz kliknięte
+      if (!isOpen) {
+        answer.classList.remove('hidden');
+        button.classList.remove('text-white/70');
+        button.classList.add('text-white');
+        const icon = button.querySelector('.arrow-icon');
+        if (icon) {
+          icon.classList.add('rotate-180');
+          icon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />`; // Strzałka w górę
+        }
+      }
+    });
+  });
+</script>
+</section>
+
+<!--  O nas-->
+  <section id="about" class="bg-white py-16">
+  <div class="max-w-screen-xl mx-auto px-6">
+    <h2 class="text-3xl font-bold text-red-rose mb-6 text-center">O nas</h2>
+    <div class="text-gray-800 space-y-4 text-justify">
+  <p>Jesteśmy klubem, który pragnie rozwijać pasje wszystkich swoich członków, a także działać w szeroko pojętym obszarze twórczości artystycznej. Wspieramy naszych członków, poszerzając ich zainteresowania w dziedzinie sztuk plastycznych, ze szczególnym uwzględnieniem zagadnień związanych z grafiką warsztatową.</p>
+  <p>Art Jam tworzą osoby nie tylko bardzo wrażliwe na otaczającą je rzeczywistość, ale przede wszystkim twórcze. Oprócz spotkań w ramach zajęć na uczelni, organizujemy wyjazdy na konferencje, wystawy oraz inne wydarzenia, takie jak plenery czy festiwale. Prowadzimy spotkania edukacyjne z działaczami kultury i organizatorami wystaw, a także poszerzamy wiedzę naszych członków poprzez udział w inicjatywach wspierających ich rozwój zawodowy.</p>
+  <p>Stworzyliśmy klub, ponieważ chcemy zdobywać nowe umiejętności, ale przede wszystkim dlatego, że jesteśmy otwarci na nowe wyzwania. Działamy w wielu dziedzinach – od malarstwa po tak zwane nowe media ekspresji artystycznej. Zdobywamy również doświadczenie poprzez udział w różnorodnych konkursach krajowych i międzynarodowych.</p>
+  <p>Art Jam działa jako niezależny projekt, a każdy członek ma takie same prawa i obowiązki, możliwość wyrażania siebie oraz uczestnictwa w realizowanych projektach. Do klubu może dołączyć każda osoba zainteresowana samorozwojem i działaniem w obszarze szeroko rozumianej sztuki współczesnej.</p>
+  <p>Pracujemy w technikach takich jak grafika, fotografia, rysunek, malarstwo, animacja czy film.</p>
+  <p>Członkowie klubu prezentują efekty swojej pracy przed publicznością – zarówno na żywo, jak i w przestrzeni wirtualnej, uczą się pracy zespołowej oraz współpracy z zewnętrznymi organizacjami.</p>
+  <p>Jesteśmy studentami różnych kierunków, których łączy wspólna pasja. Naszym celem jest promowanie aktywności artystycznej w murach uczelni oraz nawiązywanie kontaktów z przedstawicielami świata sztuki.</p>
+  <p>Choć jesteśmy młodą organizacją, dokładamy wszelkich starań, aby wspierać naszych członków w rozwoju ich zainteresowań.</p>    </div>
+    </div>
+</section>
+<!--Kontakt -->
+<section id="contact" class="bg-turquoise bg-opacity-80 py-16 text-white">
+  <div class="max-w-screen-xl mx-auto px-6">
+    <h2 class="text-3xl font-bold mb-10 text-center">Kontakt</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
+
+      <!-- Przewodnicząca -->
+      <div class="space-y-3">
+        <h3 class="text-xl font-semibold">Przewodnicząca</h3>
+        <strong>Mary Kolenchenko</strong>
+        <p>
+          <a href="mailto:mkolenchenko@edu.cdv.pl" class="underline hover:text-black">
+            mkolenchenko@edu.cdv.pl
+          </a>
+        </p>
+      </div>
+
+      <!-- Opiekun -->
+      <div class="space-y-3">
+        <h3 class="text-xl font-semibold">Opiekun</h3>
+        <strong>Grzegorz Myćka, MA</strong>
+        <p>
+          <a href="mailto:grzegorz.mycka@cdv.pl" class="underline hover:text-black">
+            grzegorz.mycka@cdv.pl
+          </a>
+        </p>
+      </div>
+
+      <!-- Ogólny kontakt -->
+      <div class="space-y-3">
+        <strong class="text-xl font-semibold">Kontakt</strong>
+        <p>
+          <a href="mailto:artjam@cdv.pl" class="underline hover:text-black">
+            artjam@cdv.pl
+          </a>
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+</main>
+</body>
+</html>
